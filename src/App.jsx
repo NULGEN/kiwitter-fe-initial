@@ -1,11 +1,17 @@
-import "./App.css";
+//import "./App.css";
 import { Switch, Route } from "react-router-dom";
-import PageLayout from "./PageLayout";
-import Login from "./Login";
-import Signup from "./Signup";
+import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute"
+import PageLayout from "./pages/PageLayout";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import TwitDetail from "./pages/TwitDetail";
 
 function App() {
   return (
+    <AuthProvider >
     <div>
       <Switch>
         <Route path="/login">
@@ -15,18 +21,24 @@ function App() {
           <Signup />
         </Route>
 
-        <Route path="/" exact>
-          {/* /?variant=most_liked */}
-          <PageLayout>Home</PageLayout>
-        </Route>
-        <Route path="/profile/:nick">
-          <PageLayout>Profile page</PageLayout>
-        </Route>
-        <Route path="/detail/:twitId">
-          <PageLayout>Twit detail</PageLayout>
-        </Route>
+        <PrivateRoute path="/" exact>
+          <PageLayout>
+            <Home />
+          </PageLayout>
+        </PrivateRoute>
+        <PrivateRoute path="/profile/:nick">
+          <PageLayout>
+            <Profile />
+          </PageLayout>
+        </PrivateRoute>
+        <PrivateRoute path="/detail/:twitId">
+          <PageLayout>
+            <TwitDetail />
+          </PageLayout>
+        </PrivateRoute>
       </Switch>
     </div>
+  </AuthProvider>
   );
 }
 
